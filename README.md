@@ -1,7 +1,9 @@
 "# node-red-contrib-auth-google" 
 
 Install using npm
+```
 npm i node-red-contrib-auth-google
+```
 
 declare module using either
 ```javascript
