@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-auth-google",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "\"# node-red-contrib-auth-google\"",
   "main": "dist/node-red-contrib-auth-google.js",
   "scripts": {

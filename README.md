@@ -17,6 +17,7 @@ then initilize
 ```typescript
 settings.adminAuth = new googleauth.noderedcontribauthgoogle("http://localhost:1880/", "blahblah.apps.googleusercontent.com", "secret", 
 (profile:string | any, done:any)=> {
+    profile.permissions = "read";
     profile.permissions = "*";
     done(profile);
 });
