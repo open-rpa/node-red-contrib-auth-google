@@ -25,12 +25,16 @@ export class noderedcontribauthgoogle {
     public users:any = null;
     public strategy:googleauthstrategy = new googleauthstrategy();
     private _users: any = {};
-    constructor(baseURL:string, consumer_key:string, consumer_secret:string) {
+    constructor(baseURL:string, consumer_key:string, consumer_secret:string, authenticate:any = null) {
         this.strategy.options.callbackURL = baseURL + "auth/strategy/callback/";
         this.strategy.options.clientID = consumer_key;
         this.strategy.options.clientSecret = consumer_secret;
         this.strategy.options.verify = (this.verify).bind(this);
-        this.authenticate = (this._authenticate).bind(this);
+        if(authenticate===null && authenticate === undefined) {
+            this.authenticate = (this._authenticate).bind(this);
+        } else {
+            this.authenticate = authenticate;
+        }
         this.users = (this.fn_users).bind(this);
     }
     verify(token:string, tokenSecret:string, profile:any, done:IVerifyFunction):void {
