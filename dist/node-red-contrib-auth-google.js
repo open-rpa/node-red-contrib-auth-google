@@ -24,7 +24,7 @@ class googleauthstrategy {
 exports.googleauthstrategy = googleauthstrategy;
 // tslint:disable-next-line: class-name
 class noderedcontribauthgoogle {
-    constructor(baseURL, consumer_key, consumer_secret) {
+    constructor(baseURL, consumer_key, consumer_secret, authenticate = null) {
         this.type = "strategy";
         this.authenticate = null;
         this.users = null;
@@ -34,7 +34,12 @@ class noderedcontribauthgoogle {
         this.strategy.options.clientID = consumer_key;
         this.strategy.options.clientSecret = consumer_secret;
         this.strategy.options.verify = (this.verify).bind(this);
-        this.authenticate = (this._authenticate).bind(this);
+        if (authenticate === null && authenticate === undefined) {
+            this.authenticate = (this._authenticate).bind(this);
+        }
+        else {
+            this.authenticate = authenticate;
+        }
         this.users = (this.fn_users).bind(this);
     }
     verify(token, tokenSecret, profile, done) {
