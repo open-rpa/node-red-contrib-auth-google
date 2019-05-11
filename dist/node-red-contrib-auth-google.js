@@ -24,7 +24,7 @@ class googleauthstrategy {
 exports.googleauthstrategy = googleauthstrategy;
 // tslint:disable-next-line: class-name
 class noderedcontribauthgoogle {
-    constructor(baseURL, consumer_key, consumer_secret, authenticate = null) {
+    constructor(baseURL, consumer_key, consumer_secret, customverify = null) {
         this.type = "strategy";
         this.authenticate = null;
         this.users = null;
@@ -34,12 +34,8 @@ class noderedcontribauthgoogle {
         this.strategy.options.clientID = consumer_key;
         this.strategy.options.clientSecret = consumer_secret;
         this.strategy.options.verify = (this.verify).bind(this);
-        if (authenticate === null && authenticate === undefined) {
-            this.authenticate = (this._authenticate).bind(this);
-        }
-        else {
-            this.authenticate = authenticate;
-        }
+        this.customverify = customverify;
+        this.authenticate = (this._authenticate).bind(this);
         this.users = (this.fn_users).bind(this);
     }
     verify(token, tokenSecret, profile, done) {
@@ -47,8 +43,16 @@ class noderedcontribauthgoogle {
             var email = profile.emails[0];
             profile.username = email.value;
         }
-        this._users[profile.username] = profile;
-        done(null, profile);
+        if (this.customverify !== null && this.customverify !== undefined) {
+            this.customverify(profile, (newprofile) => {
+                this._users[newprofile.username] = newprofile;
+                done(null, newprofile);
+            });
+        }
+        else {
+            this._users[profile.username] = profile;
+            done(null, profile);
+        }
     }
     async _authenticate(profile, arg2) {
         var username = profile;
